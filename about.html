@@ -21,7 +21,7 @@
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     color: var(--ink);
   }
-
+ 
   /* ---------- Background depth layers ---------- */
   .bg { position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
   .px { position: absolute; inset: 0; will-change: transform; }
@@ -76,7 +76,7 @@
     position: absolute; inset: 0;
     background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,.6) 100%);
   }
-
+ 
   /* ---------- Page (fits one screen) ---------- */
   .page {
     position: relative; z-index: 1;
@@ -85,7 +85,7 @@
     grid-template-rows: auto minmax(0, 1fr);
     padding: 0 clamp(20px, 6vw, 110px) clamp(16px, 3.5vh, 40px);
   }
-
+ 
   nav {
     display: flex; align-items: center; justify-content: space-between;
     padding: clamp(14px, 3vh, 30px) 0;
@@ -106,7 +106,7 @@
   }
   .links a:hover, .links a.active { color: #fff; }
   .links a:hover::after, .links a.active::after { transform: scaleX(1); }
-
+ 
   .layout {
     min-height: 0;
     display: grid;
@@ -114,7 +114,7 @@
     gap: clamp(28px, 5vw, 90px);
     align-items: stretch;
   }
-
+ 
   /* ---------- Portrait ---------- */
   .side {
     min-height: 0; height: 100%;
@@ -163,7 +163,7 @@
     background: var(--red); box-shadow: 0 0 12px var(--red); animation: pulse 2s infinite;
   }
   @keyframes pulse { 50% { opacity: .35; } }
-
+ 
   /* ---------- Right side ---------- */
   main {
     min-height: 0; min-width: 0;
@@ -192,9 +192,9 @@
   }
   @keyframes grow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
   @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
-
+ 
   .tabs { display: none; }
-
+ 
   /* ---------- Cards ---------- */
   .cards {
     flex: 1 1 0; min-height: 0; max-height: 600px;
@@ -243,7 +243,7 @@
     line-height: 1.6;
   }
   .card p strong { color: #fff; font-weight: 700; }
-
+ 
   .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: clamp(8px, 1.8vh, 16px); }
   .chips span {
     padding: clamp(4px, .8vh, 7px) 12px;
@@ -252,16 +252,20 @@
     transition: background .3s, transform .3s;
   }
   .chips span:hover { background: var(--red); transform: translateY(-2px); }
-
+ 
   .card.goal {
     background: linear-gradient(135deg, rgba(225, 6, 0, .22), rgba(138, 3, 0, .08));
     border-color: rgba(225, 6, 0, .45);
   }
   .card.goal p { color: rgba(255,255,255,.88); }
-
+ 
   /* ---------- Phone / narrow: tabs so everything fits one screen ---------- */
   @media (max-width: 860px) {
     .page { padding: 0 5vw 3vh; }
+    .brand { display: none; }
+    nav { justify-content: center; }
+    .links { gap: 14px; }
+    .links a { font-size: 10.5px; letter-spacing: .14em; }
     .layout {
       grid-template-columns: 34vw minmax(0, 1fr);
       grid-template-rows: auto auto minmax(0, 1fr);
@@ -278,7 +282,7 @@
     .eyebrow::before { width: 22px; }
     h1 { font-size: clamp(24px, 8.5vw, 44px); }
     .bar { height: 4px; margin: 10px 0 0; }
-
+ 
     .tabs {
       display: flex; gap: 6px; grid-column: 1 / -1; grid-row: 2;
       animation: fadeUp .8s .9s var(--ease) both;
@@ -291,7 +295,7 @@
       transition: background .3s, color .3s, border-color .3s;
     }
     .tabs button.active { color: #fff; background: var(--red); border-color: var(--red); }
-
+ 
     .cards { grid-column: 1 / -1; grid-row: 3; grid-template-columns: 1fr; max-height: none; }
     .card { display: none; animation: tabIn .5s var(--ease) backwards; }
     .card.active { display: flex; }
@@ -300,7 +304,7 @@
     .num { font-size: 64px; }
     @keyframes tabIn { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
   }
-
+ 
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation: none !important; transition: none !important; }
   }
@@ -314,16 +318,17 @@
     <div class="grain"></div>
     <div class="vignette"></div>
   </div>
-
+ 
   <div class="page">
     <nav>
       <div class="brand">Melvin John <b>Carolino</b></div>
       <div class="links">
         <a href="index.html">Home</a>
         <a href="about.html" class="active">Personal Info</a>
+        <a href="achievements.html">Achievements</a>
       </div>
     </nav>
-
+ 
     <div class="layout">
       <aside class="side">
         <div class="frame">
@@ -338,34 +343,34 @@
           </div>
         </div>
       </aside>
-
+ 
       <main>
         <div class="head">
           <p class="eyebrow">Get to know me</p>
           <h1><span class="line"><span>Personal</span></span> <span class="line"><span>Info</span></span></h1>
           <div class="bar"></div>
         </div>
-
+ 
         <div class="tabs">
           <button class="active" data-t="personal">Personal</button>
           <button data-t="education">Education</button>
           <button data-t="interests">Interests</button>
           <button data-t="goals">Goals</button>
         </div>
-
+ 
         <div class="cards">
           <section class="card active" data-id="personal" style="--d:0s">
             <span class="num">01</span>
             <h3>Who I Am</h3>
             <p>My name is <strong>Melvin John Carolino</strong>. I am from Binabalian, Bolinao, Pangasinan. I enjoy learning about computers, technology, and other things that help me grow as a student.</p>
           </section>
-
+ 
           <section class="card" data-id="education" style="--d:.12s">
             <span class="num">02</span>
             <h3>Education</h3>
             <p>I completed my elementary and senior high school education at <strong>Bolinao Integrated School</strong>. I am currently pursuing a <strong>Bachelor of Science in Information Technology</strong>, major in Web Technology.</p>
           </section>
-
+ 
           <section class="card" data-id="interests" style="--d:.24s">
             <span class="num">03</span>
             <h3>My Interests</h3>
@@ -374,7 +379,7 @@
               <span>Basketball</span><span>Technology</span><span>Programming</span><span>Websites</span>
             </div>
           </section>
-
+ 
           <section class="card goal" data-id="goals" style="--d:.36s">
             <span class="num">04</span>
             <h3>My Goals</h3>
@@ -384,7 +389,7 @@
       </main>
     </div>
   </div>
-
+ 
   <script>
     (function () {
       var tabs = document.querySelectorAll('.tabs button');
@@ -396,7 +401,7 @@
           cards.forEach(function (c) { c.classList.toggle('active', c.getAttribute('data-id') === id); });
         });
       });
-
+ 
       var fine = matchMedia('(hover: hover) and (pointer: fine)').matches;
       var calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
       if (!fine || calm) return;
