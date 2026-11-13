@@ -20,7 +20,7 @@
       radial-gradient(60vmax 60vmax at 30% 55%, rgba(225, 6, 0, 0.22), transparent 60%),
       var(--bg);
   }
-
+ 
   .hero {
     height: 100vh;
     height: 100dvh;
@@ -30,7 +30,7 @@
     column-gap: clamp(32px, 6vw, 110px);
     padding: clamp(16px, 4vh, 48px) clamp(24px, 6vw, 110px);
   }
-
+ 
   .photo {
     grid-column: 1;
     height: 100%;
@@ -50,7 +50,7 @@
     border: 2px solid var(--red);
     box-shadow: 14px 14px 0 var(--red-deep);
   }
-
+ 
   .name {
     grid-column: 2;
     text-align: left;
@@ -71,7 +71,7 @@
     margin-top: clamp(14px, 2vh, 24px);
     background: var(--red);
   }
-
+ 
   /* Phone / portrait screens: photo on the left, name beside it */
   @media (max-aspect-ratio: 1/1) {
     .hero {
@@ -93,8 +93,8 @@
 <body>
   <main class="hero">
     <div class="photo">
-      <img src="photo.jpg" alt="Portrait of Carolino Melvin John"
-           onerror="var s=this.dataset.t||'0',l=['photo.jpeg','photo.png','photo.webp'];if(+s<l.length){this.dataset.t=+s+1;this.src=l[+s];}">
+      <img src="photo.jpg.jfif" alt="Portrait of Carolino Melvin John"
+           onerror="var s=this.dataset.t||'0',l=['photo.jpg','photo.jpeg','photo.png','photo.webp'];if(+s<l.length){this.dataset.t=+s+1;this.src=l[+s];}">
     </div>
     <h1 class="name">
       <span>Carolino</span>
