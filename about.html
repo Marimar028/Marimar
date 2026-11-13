@@ -1,0 +1,420 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Personal Info | Melvin John Carolino</title>
+<style>
+  :root {
+    --bg: #070707;
+    --ink: #f5f5f5;
+    --muted: rgba(255,255,255,.72);
+    --red: #e10600;
+    --red-deep: #8a0300;
+    --x: 0;
+    --y: 0;
+    --ease: cubic-bezier(.2, .8, .1, 1);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; overflow: hidden; background: var(--bg); }
+  body {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: var(--ink);
+  }
+
+  /* ---------- Background depth layers ---------- */
+  .bg { position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+  .px { position: absolute; inset: 0; will-change: transform; }
+  .px-a { transform: translate3d(calc(var(--x) * -50px), calc(var(--y) * -36px), 0); }
+  .px-b { transform: translate3d(calc(var(--x) * -26px), calc(var(--y) * -18px), 0); }
+  .px-w { transform: translate3d(calc(var(--x) * -34px), calc(var(--y) * -20px), 0); }
+  .orb { position: absolute; border-radius: 50%; filter: blur(70px); }
+  .orb.a {
+    width: 46vmax; height: 46vmax; left: -10vmax; top: 4vh; opacity: .55;
+    background: radial-gradient(circle, #e10600 0%, transparent 65%);
+    animation: drift1 14s ease-in-out infinite alternate;
+  }
+  .orb.b {
+    width: 36vmax; height: 36vmax; right: -8vmax; bottom: -12vmax; opacity: .7;
+    background: radial-gradient(circle, #8a0300 0%, transparent 65%);
+    animation: drift2 18s ease-in-out infinite alternate;
+  }
+  @keyframes drift1 { to { transform: translate(8vmax, 6vmax) scale(1.15); } }
+  @keyframes drift2 { to { transform: translate(-10vmax, -6vmax) scale(1.2); } }
+  .grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.045) 1px, transparent 1px);
+    background-size: 56px 56px;
+    -webkit-mask-image: radial-gradient(ellipse at 40% 45%, #000 0%, transparent 75%);
+            mask-image: radial-gradient(ellipse at 40% 45%, #000 0%, transparent 75%);
+    animation: gridmove 20s linear infinite;
+  }
+  @keyframes gridmove { to { background-position: 56px 56px, 56px 56px; } }
+  .watermark {
+    position: absolute; left: 50%; bottom: -3vw;
+    transform: translateX(-50%);
+    font-weight: 900; text-transform: uppercase; white-space: nowrap;
+    font-size: 26vw; line-height: .8; letter-spacing: -0.05em;
+    color: transparent;
+    -webkit-text-stroke: 1.5px rgba(225, 6, 0, .22);
+    animation: wmove 16s ease-in-out infinite alternate;
+  }
+  @keyframes wmove { from { transform: translateX(-54%); } to { transform: translateX(-46%); } }
+  .grain {
+    position: absolute; inset: -50%; opacity: .08;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    animation: grain 1s steps(6) infinite;
+  }
+  @keyframes grain {
+    0% { transform: translate(0, 0); } 20% { transform: translate(-3%, 2%); }
+    40% { transform: translate(2%, -3%); } 60% { transform: translate(-2%, -1%); }
+    80% { transform: translate(3%, 3%); } 100% { transform: translate(0, 0); }
+  }
+  .vignette {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,.6) 100%);
+  }
+
+  /* ---------- Page (fits one screen) ---------- */
+  .page {
+    position: relative; z-index: 1;
+    height: 100vh; height: 100dvh;
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr);
+    padding: 0 clamp(20px, 6vw, 110px) clamp(16px, 3.5vh, 40px);
+  }
+
+  nav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: clamp(14px, 3vh, 30px) 0;
+    animation: fadeUp .8s .1s var(--ease) both;
+  }
+  .brand { font-weight: 800; letter-spacing: .2em; text-transform: uppercase; font-size: 13px; }
+  .brand b { color: var(--red); }
+  .links { display: flex; gap: clamp(18px, 3vw, 40px); }
+  .links a {
+    position: relative; color: var(--muted); text-decoration: none;
+    font-size: 12px; letter-spacing: .3em; text-transform: uppercase;
+    padding: 6px 0; transition: color .3s;
+  }
+  .links a::after {
+    content: ""; position: absolute; left: 0; bottom: 0; height: 2px; width: 100%;
+    background: var(--red); transform: scaleX(0); transform-origin: left;
+    transition: transform .35s var(--ease);
+  }
+  .links a:hover, .links a.active { color: #fff; }
+  .links a:hover::after, .links a.active::after { transform: scaleX(1); }
+
+  .layout {
+    min-height: 0;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: clamp(28px, 5vw, 90px);
+    align-items: stretch;
+  }
+
+  /* ---------- Portrait ---------- */
+  .side {
+    min-height: 0; height: 100%;
+    display: flex; align-items: center;
+    padding: 12px 18px 18px 12px;
+    animation: fadeUp .9s .2s var(--ease) both;
+  }
+  .frame {
+    position: relative;
+    height: 100%;
+    max-height: 40vw;
+    aspect-ratio: 3 / 4;
+  }
+  .frame::before {
+    content: ""; position: absolute; inset: 0;
+    background: linear-gradient(135deg, var(--red-deep), #3a0100);
+    transform: translate(14px, 14px);
+  }
+  .frame::after {
+    content: ""; position: absolute; inset: 0;
+    border: 2px solid var(--red);
+    transform: translate(-10px, -10px);
+  }
+  .img-wrap {
+    position: relative; z-index: 1; width: 100%; height: 100%;
+    overflow: hidden; border: 2px solid var(--red); background: #fff;
+    box-shadow: 0 24px 50px rgba(0,0,0,.6), 0 0 50px rgba(225, 6, 0, .22);
+  }
+  .img-wrap img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top center; }
+  .shine {
+    position: absolute; inset: 0;
+    background: linear-gradient(115deg, transparent 38%, rgba(255,255,255,.35) 50%, transparent 62%);
+    transform: translateX(-130%);
+    animation: shine 6s 2s ease-in-out infinite;
+  }
+  @keyframes shine { 0% { transform: translateX(-130%); } 30%, 100% { transform: translateX(130%); } }
+  .tag {
+    position: absolute; left: 0; right: 0; bottom: 0; z-index: 2;
+    padding: 44px 16px 16px;
+    background: linear-gradient(transparent, rgba(0,0,0,.88));
+  }
+  .tag h2 { font-size: clamp(14px, 2.3vh, 22px); letter-spacing: -0.01em; }
+  .tag p { margin-top: 5px; color: var(--muted); font-size: clamp(11px, 1.6vh, 13px); }
+  .tag .dot {
+    display: inline-block; width: 7px; height: 7px; margin-right: 8px; border-radius: 50%;
+    background: var(--red); box-shadow: 0 0 12px var(--red); animation: pulse 2s infinite;
+  }
+  @keyframes pulse { 50% { opacity: .35; } }
+
+  /* ---------- Right side ---------- */
+  main {
+    min-height: 0; min-width: 0;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .eyebrow {
+    display: flex; align-items: center; gap: 14px;
+    font-size: clamp(10px, 1.6vh, 13px); letter-spacing: .45em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: clamp(8px, 1.6vh, 16px);
+    animation: fadeUp .8s .3s var(--ease) both;
+  }
+  .eyebrow::before { content: ""; width: 42px; height: 2px; background: var(--red); }
+  h1 {
+    font-weight: 800; text-transform: uppercase; letter-spacing: -0.03em; line-height: .95;
+    font-size: clamp(30px, min(5vw, 9vh), 84px);
+  }
+  .line { display: inline-block; vertical-align: top; overflow: hidden; padding: .03em 0; }
+  .line > span { display: block; animation: rise 1s var(--ease) both; }
+  .line:nth-child(1) > span { animation-delay: .4s; }
+  .line:nth-child(2) > span { animation-delay: .55s; color: var(--red); }
+  @keyframes rise { from { transform: translateY(110%); } to { transform: translateY(0); } }
+  .bar {
+    height: 6px; width: clamp(48px, 6vw, 96px); background: var(--red);
+    margin: clamp(10px, 2vh, 20px) 0 clamp(14px, 3vh, 30px);
+    transform-origin: left; animation: grow .9s 1s var(--ease) both;
+  }
+  @keyframes grow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+
+  .tabs { display: none; }
+
+  /* ---------- Cards ---------- */
+  .cards {
+    flex: 1 1 0; min-height: 0; max-height: 600px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-auto-rows: minmax(0, 1fr);
+    gap: clamp(10px, 1.6vh, 20px);
+  }
+  .card {
+    position: relative; overflow: hidden;
+    display: flex; flex-direction: column;
+    padding: clamp(14px, 2.4vh, 30px) clamp(16px, 1.8vw, 28px);
+    background: rgba(255,255,255,.04);
+    border: 1px solid rgba(255,255,255,.09);
+    -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+    transition: transform .4s var(--ease), border-color .4s, box-shadow .4s, background .4s;
+    animation: cardIn .9s calc(.9s + var(--d, 0s)) var(--ease) backwards;
+  }
+  @keyframes cardIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: none; } }
+  .card::before {
+    content: ""; position: absolute; left: 0; top: 0; height: 3px; width: 100%;
+    background: linear-gradient(90deg, var(--red), transparent);
+    transform-origin: left;
+    animation: lineGrow 1s calc(1.2s + var(--d, 0s)) var(--ease) backwards;
+  }
+  @keyframes lineGrow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+  .card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(225, 6, 0, .7);
+    background: rgba(225, 6, 0, .07);
+    box-shadow: 0 20px 50px rgba(0,0,0,.5), 0 0 40px rgba(225, 6, 0, .18);
+  }
+  .num {
+    position: absolute; right: 14px; top: 2px;
+    font-size: clamp(40px, 7vh, 72px); font-weight: 900; line-height: 1;
+    color: transparent; -webkit-text-stroke: 1px rgba(225, 6, 0, .35);
+    pointer-events: none;
+  }
+  .card h3 {
+    font-size: clamp(10px, 1.5vh, 12px); letter-spacing: .35em; text-transform: uppercase;
+    color: var(--red); margin-bottom: clamp(8px, 1.6vh, 14px);
+  }
+  .card p {
+    color: var(--muted);
+    font-size: clamp(12.5px, min(1.05vw, 2vh), 17px);
+    line-height: 1.6;
+  }
+  .card p strong { color: #fff; font-weight: 700; }
+
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: clamp(8px, 1.8vh, 16px); }
+  .chips span {
+    padding: clamp(4px, .8vh, 7px) 12px;
+    font-size: clamp(10px, 1.4vh, 12px); letter-spacing: .15em; text-transform: uppercase;
+    border: 1px solid rgba(225, 6, 0, .6); color: #fff; background: rgba(225, 6, 0, .1);
+    transition: background .3s, transform .3s;
+  }
+  .chips span:hover { background: var(--red); transform: translateY(-2px); }
+
+  .card.goal {
+    background: linear-gradient(135deg, rgba(225, 6, 0, .22), rgba(138, 3, 0, .08));
+    border-color: rgba(225, 6, 0, .45);
+  }
+  .card.goal p { color: rgba(255,255,255,.88); }
+
+  /* ---------- Phone / narrow: tabs so everything fits one screen ---------- */
+  @media (max-width: 860px) {
+    .page { padding: 0 5vw 3vh; }
+    .layout {
+      grid-template-columns: 34vw minmax(0, 1fr);
+      grid-template-rows: auto auto minmax(0, 1fr);
+      gap: 2.2vh 5vw;
+    }
+    .side { grid-column: 1; grid-row: 1; height: auto; padding: 8px 12px 12px 8px; }
+    .frame { height: auto; width: 100%; max-height: none; }
+    .frame::before { transform: translate(8px, 8px); }
+    .frame::after { transform: translate(-6px, -6px); }
+    .tag { display: none; }
+    main { display: contents; }
+    .head { grid-column: 2; grid-row: 1; align-self: center; }
+    .eyebrow { letter-spacing: .3em; }
+    .eyebrow::before { width: 22px; }
+    h1 { font-size: clamp(24px, 8.5vw, 44px); }
+    .bar { height: 4px; margin: 10px 0 0; }
+
+    .tabs {
+      display: flex; gap: 6px; grid-column: 1 / -1; grid-row: 2;
+      animation: fadeUp .8s .9s var(--ease) both;
+    }
+    .tabs button {
+      flex: 1; padding: 11px 4px; cursor: pointer;
+      font: inherit; font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase;
+      color: var(--muted); background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.12);
+      transition: background .3s, color .3s, border-color .3s;
+    }
+    .tabs button.active { color: #fff; background: var(--red); border-color: var(--red); }
+
+    .cards { grid-column: 1 / -1; grid-row: 3; grid-template-columns: 1fr; max-height: none; }
+    .card { display: none; animation: tabIn .5s var(--ease) backwards; }
+    .card.active { display: flex; }
+    .card p { font-size: clamp(14px, 4vw, 17px); }
+    .card h3 { font-size: 12px; }
+    .num { font-size: 64px; }
+    @keyframes tabIn { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+  }
+</style>
+</head>
+<body>
+  <div class="bg">
+    <div class="px px-a"><div class="orb a"></div><div class="orb b"></div></div>
+    <div class="px px-b"><div class="grid"></div></div>
+    <div class="px px-w"><div class="watermark">Personal</div></div>
+    <div class="grain"></div>
+    <div class="vignette"></div>
+  </div>
+
+  <div class="page">
+    <nav>
+      <div class="brand">Melvin John <b>Carolino</b></div>
+      <div class="links">
+        <a href="index.html">Home</a>
+        <a href="about.html" class="active">Personal Info</a>
+      </div>
+    </nav>
+
+    <div class="layout">
+      <aside class="side">
+        <div class="frame">
+          <div class="img-wrap">
+            <img src="photo.jpg.jfif" alt="Portrait of Melvin John Carolino"
+                 onerror="var s=this.dataset.t||'0',l=['photo.jpg','photo.jpeg','photo.png','photo.webp'];if(+s<l.length){this.dataset.t=+s+1;this.src=l[+s];}">
+            <div class="shine"></div>
+            <div class="tag">
+              <h2>Melvin John Carolino</h2>
+              <p><span class="dot"></span>IT Student &middot; Web Technology</p>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <main>
+        <div class="head">
+          <p class="eyebrow">Get to know me</p>
+          <h1><span class="line"><span>Personal</span></span> <span class="line"><span>Info</span></span></h1>
+          <div class="bar"></div>
+        </div>
+
+        <div class="tabs">
+          <button class="active" data-t="personal">Personal</button>
+          <button data-t="education">Education</button>
+          <button data-t="interests">Interests</button>
+          <button data-t="goals">Goals</button>
+        </div>
+
+        <div class="cards">
+          <section class="card active" data-id="personal" style="--d:0s">
+            <span class="num">01</span>
+            <h3>Who I Am</h3>
+            <p>My name is <strong>Melvin John Carolino</strong>. I am from Binabalian, Bolinao, Pangasinan. I enjoy learning about computers, technology, and other things that help me grow as a student.</p>
+          </section>
+
+          <section class="card" data-id="education" style="--d:.12s">
+            <span class="num">02</span>
+            <h3>Education</h3>
+            <p>I completed my elementary and senior high school education at <strong>Bolinao Integrated School</strong>. I am currently pursuing a <strong>Bachelor of Science in Information Technology</strong>, major in Web Technology.</p>
+          </section>
+
+          <section class="card" data-id="interests" style="--d:.24s">
+            <span class="num">03</span>
+            <h3>My Interests</h3>
+            <p>I enjoy playing basketball, exploring technology, learning programming, and developing creative ideas related to computers and websites.</p>
+            <div class="chips">
+              <span>Basketball</span><span>Technology</span><span>Programming</span><span>Websites</span>
+            </div>
+          </section>
+
+          <section class="card goal" data-id="goals" style="--d:.36s">
+            <span class="num">04</span>
+            <h3>My Goals</h3>
+            <p>My goal is to become a skilled IT professional, improve my programming abilities, and create useful and meaningful websites in the future.</p>
+          </section>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var tabs = document.querySelectorAll('.tabs button');
+      var cards = document.querySelectorAll('.card');
+      tabs.forEach(function (t) {
+        t.addEventListener('click', function () {
+          var id = t.getAttribute('data-t');
+          tabs.forEach(function (b) { b.classList.toggle('active', b === t); });
+          cards.forEach(function (c) { c.classList.toggle('active', c.getAttribute('data-id') === id); });
+        });
+      });
+
+      var fine = matchMedia('(hover: hover) and (pointer: fine)').matches;
+      var calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!fine || calm) return;
+      var root = document.documentElement;
+      var tx = 0, ty = 0, x = 0, y = 0, raf = 0;
+      addEventListener('pointermove', function (e) {
+        tx = e.clientX / innerWidth - 0.5;
+        ty = e.clientY / innerHeight - 0.5;
+        if (!raf) raf = requestAnimationFrame(tick);
+      });
+      function tick() {
+        x += (tx - x) * 0.08;
+        y += (ty - y) * 0.08;
+        root.style.setProperty('--x', x.toFixed(4));
+        root.style.setProperty('--y', y.toFixed(4));
+        raf = (Math.abs(tx - x) > 0.001 || Math.abs(ty - y) > 0.001) ? requestAnimationFrame(tick) : 0;
+      }
+    })();
+  </script>
+</body>
+</html>
