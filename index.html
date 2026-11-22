@@ -212,6 +212,9 @@
     padding: clamp(14px, 3vh, 30px) clamp(24px, 6vw, 110px);
     animation: fadeUp .8s .2s var(--ease) both;
   }
+  .seal { display: block; height: clamp(34px, 6.2vh, 54px); width: auto; filter: drop-shadow(0 0 14px rgba(225, 6, 0, .35)); }
+  .seal-link { margin-right: auto; display: block; }
+  .topnav { align-items: center; }
   .topnav a {
     position: relative; color: rgba(255,255,255,.72); text-decoration: none;
     font-size: 12px; letter-spacing: .3em; text-transform: uppercase;
@@ -228,8 +231,8 @@
   /* ---------- Phone / portrait ---------- */
   @media (max-aspect-ratio: 1/1) {
     .hero { column-gap: 5vw; padding: 11vh 5vw 5vh; }
-    .topnav { justify-content: center; gap: 14px; padding: 16px 5vw; }
-    .topnav a { font-size: 10.5px; letter-spacing: .14em; }
+    .topnav { justify-content: flex-end; gap: 12px; padding: 12px 5vw; }
+    .topnav a { font-size: 10px; letter-spacing: .12em; }
     .photo { height: auto; max-height: 100%; padding-right: 12px; }
     .frame { height: auto; width: 44vw; max-height: 90vh; }
     .frame::before { transform: translate(10px, 10px); }
@@ -280,6 +283,7 @@
   </main>
  
   <nav class="topnav">
+    <a class="seal-link" href="index.html" aria-label="Home"><img class="seal" src="UC_Official_Seal.png" alt="University of the Cordilleras seal" onerror="this.remove()"></a>
     <a href="index.html" class="active">Home</a>
     <a href="about.html">Personal Info</a>
     <a href="achievements.html">Achievements</a>
