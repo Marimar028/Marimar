@@ -292,6 +292,8 @@
     .chips span { padding: 2px 8px; font-size: 9px; letter-spacing: .1em; }
   }
 
+  @media (max-width: 560px) { .amp { display: none; } }
+
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation: none !important; transition: none !important; }
   }
@@ -308,11 +310,12 @@
  
   <div class="page">
     <nav>
-      <a class="brand" href="index.html"><img class="seal" src="UC_Official_Seal.png" alt="University of the Cordilleras seal" onerror="this.remove()"><span class="bn">Melvin John <b>Carolino</b></span></a>
+      <a class="brand" href="index.html"><img class="seal" src="images/UC_Official_Seal.png" alt="University of the Cordilleras seal" onerror="this.remove()"><span class="bn">Melvin John <b>Carolino</b></span></a>
       <div class="links">
         <a href="index.html">Home</a>
         <a href="about.html" class="active">Personal Info</a>
         <a href="achievements.html">Achievements</a>
+        <a href="family.html">Family<span class="amp"> &amp; Friends</span></a>
       </div>
     </nav>
  
@@ -320,8 +323,8 @@
       <aside class="side">
         <div class="frame">
           <div class="img-wrap">
-            <img src="photo.jpg.jfif" alt="Portrait of Melvin John Carolino"
-                 onerror="var s=this.dataset.t||'0',l=['photo.jpg','photo.jpeg','photo.png','photo.webp'];if(+s<l.length){this.dataset.t=+s+1;this.src=l[+s];}">
+            <img src="images/photo.jpg.jfif" alt="Portrait of Melvin John Carolino"
+                 onerror="var s=this.dataset.t||'0',l=['images/photo.jpg','images/photo.jpeg','images/photo.png','images/photo.webp'];if(+s<l.length){this.dataset.t=+s+1;this.src=l[+s];}">
             <div class="shine"></div>
             <div class="tag">
               <h2>Melvin John Carolino</h2>
