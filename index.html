@@ -104,7 +104,7 @@
  
   .frame {
     position: relative;
-    height: 100%;
+    height: 62%;
     aspect-ratio: 3 / 4;
     max-width: 100%;
     transform: perspective(1100px) rotateX(calc(var(--y) * -7deg)) rotateY(calc(var(--x) * 9deg));
@@ -231,10 +231,10 @@
   /* ---------- Phone / portrait ---------- */
   @media (max-aspect-ratio: 1/1) {
     .hero { column-gap: 5vw; padding: 11vh 5vw 5vh; }
-    .topnav { justify-content: flex-end; gap: 12px; padding: 12px 5vw; }
-    .topnav a { font-size: 10px; letter-spacing: .12em; }
+    .topnav { justify-content: flex-end; gap: 10px; padding: 12px 5vw; }
+    .topnav a { font-size: 10px; letter-spacing: .1em; white-space: nowrap; }
     .photo { height: auto; max-height: 100%; padding-right: 12px; }
-    .frame { height: auto; width: 44vw; max-height: 90vh; }
+    .frame { height: auto; width: 30vw; max-height: 60vh; }
     .frame::before { transform: translate(10px, 10px); }
     @keyframes slideBlock { from { transform: translate(0, 0); opacity: 0; } to { transform: translate(10px, 10px); opacity: 1; } }
     .frame::after { transform: translate(-7px, -7px); }
@@ -246,6 +246,8 @@
     .corner { display: none; }
   }
  
+  @media (max-width: 560px) { .amp { display: none; } }
+
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation: none !important; transition: none !important; }
   }
@@ -264,8 +266,8 @@
     <div class="photo">
       <div class="frame">
         <div class="img-wrap">
-          <img src="photo.jpg.jfif" alt="Portrait of Carolino Melvin John"
-               onerror="var s=this.dataset.t||'0',l=['photo.jpg','photo.jpeg','photo.png','photo.webp'];if(+s<l.length){this.dataset.t=+s+1;this.src=l[+s];}">
+          <img src="images/photo.jpg.jfif" alt="Portrait of Carolino Melvin John"
+               onerror="var s=this.dataset.t||'0',l=['images/photo.jpg','images/photo.jpeg','images/photo.png','images/photo.webp'];if(+s<l.length){this.dataset.t=+s+1;this.src=l[+s];}">
           <div class="shine"></div>
         </div>
       </div>
@@ -283,10 +285,11 @@
   </main>
  
   <nav class="topnav">
-    <a class="seal-link" href="index.html" aria-label="Home"><img class="seal" src="UC_Official_Seal.png" alt="University of the Cordilleras seal" onerror="this.remove()"></a>
+    <a class="seal-link" href="index.html" aria-label="Home"><img class="seal" src="images/UC_Official_Seal.png" alt="University of the Cordilleras seal" onerror="this.remove()"></a>
     <a href="index.html" class="active">Home</a>
     <a href="about.html">Personal Info</a>
     <a href="achievements.html">Achievements</a>
+    <a href="family.html">Family<span class="amp"> &amp; Friends</span></a>
   </nav>
  
   <script>
