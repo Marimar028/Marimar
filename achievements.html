@@ -107,7 +107,8 @@
     padding: clamp(14px, 3vh, 30px) 0;
     animation: fadeUp .8s .1s var(--ease) both;
   }
-  .brand { font-weight: 800; letter-spacing: .2em; text-transform: uppercase; font-size: 13px; }
+  .brand { display: flex; align-items: center; gap: 12px; color: inherit; text-decoration: none; font-weight: 800; letter-spacing: .2em; text-transform: uppercase; font-size: 13px; }
+  .seal { display: block; height: clamp(34px, 6.2vh, 54px); width: auto; filter: drop-shadow(0 0 14px rgba(225, 6, 0, .35)); }
   .brand b { color: var(--red); }
   .links { display: flex; gap: clamp(16px, 3vw, 40px); }
   .links a {
@@ -126,73 +127,48 @@
   .layout {
     min-height: 0;
     display: grid;
-    grid-template-columns: auto minmax(0, 1fr);
-    gap: clamp(28px, 5vw, 90px);
+    grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+    gap: clamp(20px, 3.6vw, 64px);
     align-items: stretch;
   }
 
-  /* ---------- Photo slideshow ---------- */
-  .side {
-    min-height: 0; height: 100%;
-    display: flex; align-items: center;
-    padding: 12px 18px 18px 12px;
-    animation: fadeUp .9s .2s var(--ease) both;
+  /* ---------- Left: all three photos, then three highlight cards ---------- */
+  .left { min-height: 0; display: grid; grid-template-rows: minmax(0, 1.55fr) minmax(0, 1fr); gap: clamp(12px, 2vh, 22px); }
+  .photos {
+    min-height: 0;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-rows: minmax(0, 1fr);
+    gap: clamp(10px, 1.4vw, 20px);
   }
-  .frame {
-    position: relative;
-    height: 100%;
-    max-height: 45vw;
-    aspect-ratio: 3 / 4;
+  .shot {
+    position: relative; min-height: 0; margin: 0; overflow: hidden;
+    border: 2px solid var(--red); background: #0b1020;
+    box-shadow: 0 24px 50px rgba(0,0,0,.6), 0 0 40px rgba(225, 6, 0, .2);
+    animation: cardIn .9s calc(.5s + var(--d, 0s)) var(--ease) backwards;
   }
-  .frame::before {
-    content: ""; position: absolute; inset: 0;
-    background: linear-gradient(135deg, var(--red-deep), #3a0100);
-    transform: translate(14px, 14px);
-  }
-  .frame::after {
-    content: ""; position: absolute; inset: 0;
-    border: 2px solid var(--red);
-    transform: translate(-10px, -10px);
-  }
-  .img-wrap {
-    position: relative; z-index: 1; width: 100%; height: 100%;
-    overflow: hidden; border: 2px solid var(--red); background: #0b1020;
-    box-shadow: 0 24px 50px rgba(0,0,0,.6), 0 0 50px rgba(225, 6, 0, .22);
-    cursor: pointer;
-  }
-  .slide {
+  .shot img {
     position: absolute; inset: 0; width: 100%; height: 100%;
-    object-fit: cover; object-position: center;
-    opacity: 0; transform: scale(1.08);
-    transition: opacity 1s var(--ease), transform 6s linear;
+    object-fit: cover; object-position: center 20%;
+    transition: transform 1.2s var(--ease);
   }
-  .slide.on { opacity: 1; transform: scale(1); }
-  .slide[data-missing] { display: none; }
-  .shine {
-    position: absolute; inset: 0; pointer-events: none;
-    background: linear-gradient(115deg, transparent 38%, rgba(255,255,255,.28) 50%, transparent 62%);
+  .shot img[data-missing] { display: none; }
+  .shot:hover img { transform: scale(1.05); }
+  .shot::after {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: linear-gradient(115deg, transparent 38%, rgba(255,255,255,.25) 50%, transparent 62%);
     transform: translateX(-130%);
-    animation: shine 6s 2s ease-in-out infinite;
+    animation: shine 6s calc(2s + var(--d, 0s)) ease-in-out infinite;
   }
   @keyframes shine { 0% { transform: translateX(-130%); } 30%, 100% { transform: translateX(130%); } }
-  .tag {
+  .shot figcaption {
     position: absolute; left: 0; right: 0; bottom: 0; z-index: 2;
-    padding: 46px 16px 14px;
+    padding: 36px 12px 12px;
     background: linear-gradient(transparent, rgba(0,0,0,.9));
   }
-  .tag h2 { font-size: clamp(14px, 2.3vh, 21px); letter-spacing: -0.01em; }
-  .tag p { margin-top: 5px; color: var(--muted); font-size: clamp(11px, 1.6vh, 13px); }
-  .tag .dot {
-    display: inline-block; width: 7px; height: 7px; margin-right: 8px; border-radius: 50%;
-    background: var(--red); box-shadow: 0 0 12px var(--red); animation: pulse 2s infinite;
-  }
-  @keyframes pulse { 50% { opacity: .35; } }
-  .dots { position: absolute; top: 12px; right: 12px; z-index: 3; display: flex; gap: 6px; }
-  .dots i {
-    width: 22px; height: 4px; background: rgba(255,255,255,.4); cursor: pointer;
-    transition: background .3s, width .3s;
-  }
-  .dots i.on { background: var(--red); width: 34px; }
+  .shot h2 { font-size: clamp(11px, 1.7vh, 15px); line-height: 1.2; letter-spacing: -0.01em; }
+  .shot p { margin-top: 3px; color: var(--muted); font-size: clamp(9.5px, 1.35vh, 12px); }
+  .minis { min-height: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(10px, 1.4vw, 20px); }
 
   /* ---------- Right side ---------- */
   main {
@@ -306,42 +282,46 @@
   .tl b { flex: none; min-width: 3.2ch; color: var(--red); font-weight: 800; }
   .tl span { color: #fff; }
 
-  /* ---------- Phone / narrow ---------- */
+  /* ---------- Layout overrides: highlight cards and right column ---------- */
+  .minis .card { flex-direction: column; align-items: flex-start; justify-content: center; gap: clamp(8px, 1.6vh, 16px); }
+  .minis .ico { width: clamp(30px, 6.4vh, 56px); height: clamp(30px, 6.4vh, 56px); }
+  .minis .txt h3 { font-size: clamp(13px, 2.3vh, 20px); }
+  .minis .txt p { font-size: clamp(11px, min(.95vw, 1.8vh), 14px); }
+  .cards { max-height: none; grid-template-columns: 1fr; grid-template-rows: minmax(0, 1fr) minmax(0, 1fr); }
+  .card.feature { grid-column: auto; }
+  .tl li { font-size: clamp(12px, min(1.1vw, 2.1vh), 17px); }
+
+  /* ---------- Phone / narrow: everything stacked on one screen ---------- */
   @media (max-width: 860px) {
-    .page { padding: 0 5vw 3vh; }
-    .brand { display: none; }
-    nav { justify-content: center; }
-    .links { gap: 14px; }
-    .links a { font-size: 10.5px; letter-spacing: .14em; }
-    .layout {
-      grid-template-columns: 30vw minmax(0, 1fr);
-      grid-template-rows: auto minmax(0, 1fr);
-      gap: 2.2vh 5vw;
-    }
-    .side { grid-column: 1; grid-row: 1; height: auto; padding: 8px 12px 12px 8px; }
-    .frame { height: auto; width: 100%; max-height: none; }
-    .frame::before { transform: translate(8px, 8px); }
-    .frame::after { transform: translate(-6px, -6px); }
-    .tag { display: none; }
-    .dots { top: 6px; right: 6px; gap: 4px; }
-    .dots i { width: 10px; height: 3px; }
-    .dots i.on { width: 16px; }
-    main { display: contents; }
-    .head { grid-column: 2; grid-row: 1; align-self: center; }
-    .eyebrow { letter-spacing: .2em; font-size: 9.5px; gap: 8px; }
+    .page { padding: 0 5vw 2.5vh; }
+    nav { padding: clamp(8px, 1.6vh, 14px) 0; gap: 10px; }
+    .brand .bn { display: none; }
+    .links { gap: 12px; }
+    .links a { font-size: 10px; letter-spacing: .12em; }
+    .layout { display: flex; flex-direction: column; gap: clamp(8px, 1.5vh, 14px); }
+    .left, main { display: contents; }
+    .head { order: 1; }
+    .photos { order: 2; flex: 1 1 0; min-height: 90px; gap: 8px; }
+    .minis { order: 3; gap: 8px; }
+    .cards { order: 4; flex: 0 0 auto; grid-template-columns: 1fr 1fr; grid-template-rows: auto; gap: 8px; }
+    .eyebrow { letter-spacing: .2em; font-size: 9.5px; gap: 8px; margin-bottom: 4px; }
     .eyebrow::before { width: 18px; }
-    h1 { font-size: clamp(20px, 6.6vw, 38px); }
-    .bar { height: 4px; margin: 10px 0 0; }
-    .cards { grid-column: 1 / -1; grid-row: 2; max-height: none; gap: 8px; }
-    .card { padding: 8px 10px; gap: 8px; }
-    .ico { width: 26px; height: 26px; }
-    .txt h3 { font-size: 12px; letter-spacing: .03em; }
-    .txt p { font-size: 10.5px; margin-top: 2px; }
-    .tl li { font-size: 10.5px; gap: 6px; }
-    .feature h3 { font-size: 26px; }
-    .feature p { font-size: 12px; }
-    .feature .label { font-size: 9.5px; letter-spacing: .3em; }
-    .cup { width: 44px; height: 44px; }
+    h1 { font-size: clamp(22px, 7vw, 38px); }
+    .bar { height: 4px; margin: 6px 0 0; }
+    .shot figcaption { padding: 20px 6px 6px; }
+    .shot h2 { font-size: 9.5px; }
+    .shot p { display: none; }
+    .minis .card { padding: 8px; gap: 6px; }
+    .minis .ico { width: 24px; height: 24px; }
+    .minis .txt h3 { font-size: 10px; letter-spacing: .03em; }
+    .minis .txt p { display: none; }
+    .card { padding: 8px 10px; }
+    .cup { width: 38px; height: 38px; }
+    .feature { flex-direction: column; align-items: flex-start; gap: 6px; }
+    .feature h3 { font-size: clamp(18px, 4.2vh, 26px); }
+    .feature p { font-size: 11px; }
+    .feature .label { font-size: 9px; letter-spacing: .25em; }
+    .tl li { font-size: 11px; gap: 6px; }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -360,7 +340,7 @@
 
   <div class="page">
     <nav>
-      <div class="brand">Melvin John <b>Carolino</b></div>
+      <a class="brand" href="index.html"><img class="seal" src="UC_Official_Seal.png" alt="University of the Cordilleras seal" onerror="this.remove()"><span class="bn">Melvin John <b>Carolino</b></span></a>
       <div class="links">
         <a href="index.html">Home</a>
         <a href="about.html">Personal Info</a>
@@ -369,24 +349,27 @@
     </nav>
 
     <div class="layout">
-      <aside class="side">
-        <div class="frame">
-          <div class="img-wrap" id="show">
-            <img class="slide on" src="achievements.jpg" data-base="achievements" onerror="nx(this)"
-                 data-title="Division Meet Champion" data-sub="Bolinao Integrated School" alt="Trophies and awards">
-            <img class="slide" src="certificate.jpg" data-base="certificate" onerror="nx(this)"
-                 data-title="With Honors &amp; Perfect Attendance" data-sub="Senior High School" alt="Certificate of recognition">
-            <img class="slide" src="champion.jpg" data-base="champion" onerror="nx(this)"
-                 data-title="Basketball Tournament Champion" data-sub="Bolinao Integrated School" alt="Basketball champion with trophy and medal">
-            <div class="shine"></div>
-            <div class="dots" id="dots"></div>
-            <div class="tag">
-              <h2 id="capT">Division Meet Champion</h2>
-              <p><span class="dot"></span><span id="capS">Bolinao Integrated School</span></p>
-            </div>
-          </div>
+      <div class="left">
+        <div class="photos">
+          <figure class="shot" style="--d:0s"><img src="achievements.jfif" data-base="achievements" onerror="nx(this)" alt="Trophies and awards"><figcaption><h2>Division Meet Champion</h2><p>Bolinao Integrated School</p></figcaption></figure>
+          <figure class="shot" style="--d:.12s"><img src="certificate.jfif" data-base="certificate" onerror="nx(this)" alt="Certificate of recognition"><figcaption><h2>With Honors &amp; Perfect Attendance</h2><p>Senior High School</p></figcaption></figure>
+          <figure class="shot" style="--d:.24s"><img src="champion.jfif" data-base="champion" onerror="nx(this)" alt="Basketball champion with trophy and medal"><figcaption><h2>Basketball Tournament Champion</h2><p>Bolinao Integrated School</p></figcaption></figure>
         </div>
-      </aside>
+        <div class="minis">
+          <section class="card" style="--d:.36s">
+            <svg class="ico" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="32" cy="26" r="15"/><path d="M24 39l-6 18 14-7 14 7-6-18"/><path d="M32 18l2.6 5.2 5.7.8-4.1 4 1 5.7L32 31l-5.1 2.7 1-5.7-4.1-4 5.7-.8z"/></svg>
+            <div class="txt"><h3>With Honors</h3><p>Senior High School &middot; Grade 12 ICT</p></div>
+          </section>
+          <section class="card" style="--d:.48s">
+            <svg class="ico" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="12" width="48" height="44" rx="4"/><path d="M8 24h48M20 6v12M44 6v12M22 40l7 7 13-14"/></svg>
+            <div class="txt"><h3>Perfect Attendance</h3><p>Senior High School</p></div>
+          </section>
+          <section class="card" style="--d:.6s">
+            <svg class="ico" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="32" cy="32" r="24"/><path d="M8 32h48M32 8v48M14 14c10 10 10 26 0 36M50 14c-10 10-10 26 0 36"/></svg>
+            <div class="txt"><h3>Champion</h3><p>Basketball Tournament</p></div>
+          </section>
+        </div>
+      </div>
 
       <main>
         <div class="head">
@@ -410,31 +393,6 @@
           </section>
 
           <section class="card" style="--d:.12s">
-            <svg class="ico" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <circle cx="32" cy="26" r="15"/>
-              <path d="M24 39l-6 18 14-7 14 7-6-18"/>
-              <path d="M32 18l2.6 5.2 5.7.8-4.1 4 1 5.7L32 31l-5.1 2.7 1-5.7-4.1-4 5.7-.8z"/>
-            </svg>
-            <div class="txt"><h3>With Honors</h3><p>Senior High School &middot; Grade 12 ICT</p></div>
-          </section>
-
-          <section class="card" style="--d:.24s">
-            <svg class="ico" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <rect x="8" y="12" width="48" height="44" rx="4"/>
-              <path d="M8 24h48M20 6v12M44 6v12M22 40l7 7 13-14"/>
-            </svg>
-            <div class="txt"><h3>Perfect Attendance</h3><p>Senior High School</p></div>
-          </section>
-
-          <section class="card" style="--d:.36s">
-            <svg class="ico" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <circle cx="32" cy="32" r="24"/>
-              <path d="M8 32h48M32 8v48M14 14c10 10 10 26 0 36M50 14c-10 10-10 26 0 36"/>
-            </svg>
-            <div class="txt"><h3>Champion</h3><p>Basketball Tournament</p></div>
-          </section>
-
-          <section class="card" style="--d:.48s">
             <div class="txt">
               <h3>Basketball Trophies</h3>
               <ul class="tl">
@@ -452,53 +410,8 @@
 
   <script>
     (function () {
-      var wrap = document.getElementById('show');
-      var slides = [].slice.call(wrap.querySelectorAll('.slide'));
-      var dotsBox = document.getElementById('dots');
-      var capT = document.getElementById('capT');
-      var capS = document.getElementById('capS');
-      var cur = 0, timer = null, paused = false;
-      var calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-      function live() { return slides.filter(function (s) { return !s.hasAttribute('data-missing'); }); }
-
-      function draw() {
-        var L = live();
-        dotsBox.innerHTML = '';
-        L.forEach(function (s, i) {
-          var d = document.createElement('i');
-          d.addEventListener('click', function (e) { e.stopPropagation(); show(i); restart(); });
-          dotsBox.appendChild(d);
-        });
-        dotsBox.style.display = L.length > 1 ? 'flex' : 'none';
-      }
-
-      function show(i) {
-        var L = live();
-        if (!L.length) return;
-        cur = (i + L.length) % L.length;
-        slides.forEach(function (s) { s.classList.remove('on'); });
-        L[cur].classList.add('on');
-        capT.textContent = L[cur].getAttribute('data-title');
-        capS.textContent = L[cur].getAttribute('data-sub');
-        [].forEach.call(dotsBox.children, function (d, k) { d.classList.toggle('on', k === cur); });
-      }
-
-      function restart() {
-        clearInterval(timer);
-        if (calm || live().length < 2) return;
-        timer = setInterval(function () { if (!paused) show(cur + 1); }, 4500);
-      }
-
-      window.refreshSlides = function () { draw(); show(cur); restart(); };
-
-      wrap.addEventListener('click', function () { show(cur + 1); restart(); });
-      wrap.addEventListener('mouseenter', function () { paused = true; });
-      wrap.addEventListener('mouseleave', function () { paused = false; });
-
-      draw(); show(0); restart();
-
       var fine = matchMedia('(hover: hover) and (pointer: fine)').matches;
+      var calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
       if (!fine || calm) return;
       var root = document.documentElement;
       var tx = 0, ty = 0, x = 0, y = 0, raf = 0;
