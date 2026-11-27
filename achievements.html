@@ -329,9 +329,45 @@
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation: none !important; transition: none !important; }
   }
+
+  /* Previous / next page arrows */
+  .arrow {
+    position: fixed; top: 50%; margin-top: -23px; z-index: 5;
+    width: 46px; height: 46px;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; text-decoration: none;
+    background: rgba(7, 7, 7, .55);
+    border: 2px solid var(--red);
+    -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+    box-shadow: 0 0 24px rgba(225, 6, 0, .25);
+    transition: background .3s, box-shadow .3s, transform .3s var(--ease);
+  }
+  .arrow svg { width: 22px; height: 22px; }
+  .arrow.prev { left: clamp(8px, 1.4vw, 24px); }
+  .arrow.next { right: clamp(8px, 1.4vw, 24px); }
+  .arrow:hover, .arrow:focus-visible {
+    background: var(--red); box-shadow: 0 0 34px rgba(225, 6, 0, .6); outline: none;
+  }
+  .arrow.prev:hover { transform: translateX(-3px); }
+  .arrow.next:hover { transform: translateX(3px); }
+
+  /* On phones the arrows sit in a strip at the bottom so they never cover content */
+  @media (max-width: 860px), (max-aspect-ratio: 1/1) {
+    .page, .hero { height: calc(100vh - 52px); height: calc(100dvh - 52px); }
+    .arrow { top: auto; bottom: 7px; margin-top: 0; width: 38px; height: 38px; }
+    .arrow svg { width: 18px; height: 18px; }
+    .arrow.prev { left: 5vw; }
+    .arrow.next { right: 5vw; }
+  }
 </style>
 </head>
 <body>
+  <a class="arrow prev" href="about.html" aria-label="Previous page">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 5 8 12 15 19"/></svg>
+  </a>
+  <a class="arrow next" href="family.html" aria-label="Next page">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 5 16 12 9 19"/></svg>
+  </a>
   <div class="bg">
     <div class="px px-a"><div class="orb a"></div><div class="orb b"></div></div>
     <div class="px px-b"><div class="grid"></div></div>
@@ -344,7 +380,6 @@
     <nav>
       <a class="brand" href="index.html"><img class="seal" src="images/UC_Official_Seal.png" alt="University of the Cordilleras seal" onerror="this.remove()"><span class="bn">Melvin John <b>Carolino</b></span></a>
       <div class="links">
-        <a href="index.html">Home</a>
         <a href="about.html">Personal Info</a>
         <a href="achievements.html" class="active">Achievements</a>
         <a href="family.html">Family<span class="amp"> &amp; Friends</span></a>
