@@ -288,6 +288,12 @@
     .card h3 { font-size: 10px; letter-spacing: .28em; margin-bottom: 3px; }
     .card p { font-size: clamp(10px, min(1.55vh, 3vw), 13px); line-height: 1.4; }
     .num { font-size: clamp(30px, 5vh, 44px); top: 4px; right: 10px; }
+
+    .cards { grid-template-rows: none; }
+    .card.details { grid-row: auto; }
+    .facts { gap: 4px 16px; }
+    .facts b { font-size: 8.5px; letter-spacing: .22em; margin-bottom: 1px; }
+    .facts span { font-size: clamp(10.5px, min(1.6vh, 3.2vw), 13px); }
     .chips { margin-top: 5px; gap: 5px; }
     .chips span { padding: 2px 8px; font-size: 9px; letter-spacing: .1em; }
   }
@@ -297,9 +303,58 @@
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation: none !important; transition: none !important; }
   }
+
+  /* ---------- Details & contact card ---------- */
+  .cards { grid-template-rows: minmax(0, 1fr) minmax(0, 1fr) auto; }
+  .card.details { grid-column: 1 / -1; }
+  .facts { list-style: none; display: flex; flex-wrap: wrap; gap: 8px clamp(18px, 2.6vw, 44px); }
+  .facts li { display: flex; flex-direction: column; min-width: 0; }
+  .facts b {
+    font-size: clamp(9px, 1.3vh, 11px); letter-spacing: .3em; text-transform: uppercase;
+    color: rgba(255,255,255,.5); font-weight: 700; margin-bottom: 3px;
+  }
+  .facts span { color: #fff; font-weight: 700; font-size: clamp(12.5px, min(1.05vw, 2vh), 17px); overflow-wrap: anywhere; }
+  .facts a { color: #fff; text-decoration: none; border-bottom: 2px solid var(--red); transition: background .3s; }
+  .facts a:hover, .facts a:focus-visible { background: var(--red); outline: none; }
+
+  /* Previous / next page arrows */
+  .arrow {
+    position: fixed; top: 50%; margin-top: -23px; z-index: 5;
+    width: 46px; height: 46px;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; text-decoration: none;
+    background: rgba(7, 7, 7, .55);
+    border: 2px solid var(--red);
+    -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+    box-shadow: 0 0 24px rgba(225, 6, 0, .25);
+    transition: background .3s, box-shadow .3s, transform .3s var(--ease);
+  }
+  .arrow svg { width: 22px; height: 22px; }
+  .arrow.prev { left: clamp(8px, 1.4vw, 24px); }
+  .arrow.next { right: clamp(8px, 1.4vw, 24px); }
+  .arrow:hover, .arrow:focus-visible {
+    background: var(--red); box-shadow: 0 0 34px rgba(225, 6, 0, .6); outline: none;
+  }
+  .arrow.prev:hover { transform: translateX(-3px); }
+  .arrow.next:hover { transform: translateX(3px); }
+
+  /* On phones the arrows sit in a strip at the bottom so they never cover content */
+  @media (max-width: 860px), (max-aspect-ratio: 1/1) {
+    .page, .hero { height: calc(100vh - 52px); height: calc(100dvh - 52px); }
+    .arrow { top: auto; bottom: 7px; margin-top: 0; width: 38px; height: 38px; }
+    .arrow svg { width: 18px; height: 18px; }
+    .arrow.prev { left: 5vw; }
+    .arrow.next { right: 5vw; }
+  }
 </style>
 </head>
 <body>
+  <a class="arrow prev" href="index.html" aria-label="Previous page">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 5 8 12 15 19"/></svg>
+  </a>
+  <a class="arrow next" href="achievements.html" aria-label="Next page">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 5 16 12 9 19"/></svg>
+  </a>
   <div class="bg">
     <div class="px px-a"><div class="orb a"></div><div class="orb b"></div></div>
     <div class="px px-b"><div class="grid"></div></div>
@@ -312,7 +367,6 @@
     <nav>
       <a class="brand" href="index.html"><img class="seal" src="images/UC_Official_Seal.png" alt="University of the Cordilleras seal" onerror="this.remove()"><span class="bn">Melvin John <b>Carolino</b></span></a>
       <div class="links">
-        <a href="index.html">Home</a>
         <a href="about.html" class="active">Personal Info</a>
         <a href="achievements.html">Achievements</a>
         <a href="family.html">Family<span class="amp"> &amp; Friends</span></a>
@@ -367,6 +421,17 @@
             <span class="num">04</span>
             <h3>My Goals</h3>
             <p>My goal is to become a skilled IT professional, improve my programming abilities, and create useful and meaningful websites in the future.</p>
+          </section>
+
+          <section class="card details" data-id="details" style="--d:.48s">
+            <span class="num">05</span>
+            <h3>Details &amp; Contact</h3>
+            <ul class="facts">
+              <li><b>Height</b><span>164.47 cm</span></li>
+              <li><b>Blood type</b><span>A+</span></li>
+              <li><b>Phone</b><span><a href="tel:+639955442497">0995 544 2497</a></span></li>
+              <li><b>Email</b><span><a href="mailto:melvinjohncarolino@gmail.com">melvinjohncarolino@gmail.com</a></span></li>
+            </ul>
           </section>
         </div>
       </main>
